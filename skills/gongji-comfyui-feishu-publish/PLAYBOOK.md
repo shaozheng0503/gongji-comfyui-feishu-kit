@@ -46,12 +46,31 @@ text, letters, words, chinese characters, subtitles, logo, signature
 
 ## D. 端到端执行步骤
 
-### 1) 结构扩展（从 1 例到 N 例）
+### 1) 结构扩展与思维链（Chain of Thought）
 
-- 保留固定风格骨架
-- 仅替换：主体、动作、场景元素
-- 产出 N 组：
-  - 标题
+扩展提示词时，**必须使用以下思维链（CoT）**，确保生成的提示词高质量且结构严谨：
+
+**【思维链步骤】**
+1. **分析原 Prompt 骨架**：找出哪些是“固定风格词/画幅词/光影词”，哪些是“可变主体词/动作词/场景词”。
+2. **提取可变槽位（Slots）**：例如 `[角色名称]`, `[代表性动作]`, `[匹配的场景底座]`。
+3. **结合 IP/主题知识进行填词**：根据用户给定的主题，思考符合该角色的核心特征，将细节填入槽位。
+4. **生成最终 Prompt**：将填好的变量无缝拼接回原骨架中。
+
+**【示例：以《海贼王》Pop-Up Book 风格为例】**
+*原骨架分析*：
+`manga <[角色名]> [ OUT OF FOCUS LIBRARY BACKGROUND ] [ VERTICAL MANGA PANEL ART ] [ ([场景动作描述]) ] | [ 3D [角色名] JUMPING OUTWARD ] [ ([具体姿势与特效]) ] | [ OPEN BOOK / [场景底座材质] BASE ] [ (Infer based on One Piece Series) ] [ TABLE SURFACE ] INSTRUCTION: Render as a high-end Pop-Up Book aesthetic...`
+
+*AI 扩展思考过程（针对角色：索隆）*：
+- 角色：Roronoa Zoro (索隆)
+- 代表性场景：剑术决斗 (Sword Duel Scene)
+- 动作与特效：三刀流斩击 (Three-Sword Style Slash)
+- 适合的底座材质：破碎的木板与火花 (BROKEN PLANK / SPARK)
+
+*最终生成的 Prompt*：
+`manga <Roronoa Zoro> [ OUT OF FOCUS LIBRARY BACKGROUND ] [ VERTICAL MANGA PANEL ART ] [ (Sword Duel Scene from One Piece Series) ] | [ 3D Roronoa Zoro JUMPING OUTWARD ] [ (Three-Sword Style Slash, Dynamic Action) ] | [ OPEN BOOK / BROKEN PLANK / SPARK BASE ] [ (Infer based on One Piece Series) ] [ TABLE SURFACE ] INSTRUCTION: Render as a high-end Pop-Up Book aesthetic. The Background is flat paper. The Character is full 3D plastic/resin. Lighting: Toy Photography style (Softbox, vibrant colors).`
+
+- 遵循以上 CoT，产出 N 组：
+  - 标题（如：索隆（三刀流））
   - Prompt
   - Negative Prompt
 
